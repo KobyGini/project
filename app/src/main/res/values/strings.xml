@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">project</string>
+
+    <!--  Errors  -->
+    <string name="network_error">Please check your connection</string>
+    <string name="general_error">Please check your connection</string>
+
+    <string name="error_message">"\uD83D\uDE28 Wooops %s"</string>
+</resources>
