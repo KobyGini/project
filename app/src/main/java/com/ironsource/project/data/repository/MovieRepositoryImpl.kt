@@ -7,6 +7,7 @@ import com.ironsource.project.domain.repository.MovieRepository
 import androidx.paging.*
 import com.ironsource.project.data.local.MovieDatabase
 import com.ironsource.project.data.remote.MovieRemoteMediator
+import com.ironsource.project.data.remote.SearchRemoteMediator
 import com.ironsource.project.domain.models.Movie
 import com.ironsource.project.domain.util.MovieConstants.DEFAULT_PAGE_SIZE
 
@@ -57,19 +58,18 @@ class MovieRepositoryImpl
         ).flow
     }
 
-//    fun letSearchMovieFlowDb(query: String): Flow<PagingData<Movie>> {
-//
-//        val pagingSourceFactory = { movieDatabase.movieDao().getSearchedMovieList() }
-//        return Pager(
-//            config = getDefaultPageConfig(),
-//            pagingSourceFactory = pagingSourceFactory,
-//            remoteMediator = SearchRemoteMediator(
-//                movieRemoteDataSource,
-//                movieDatabase,
-//                query
-//            )
-//        ).flow
-//    }
+    override fun searchMovie(query: String): Flow<PagingData<Movie>> {
+        val pagingSourceFactory = { movieDatabase.movieDao().getSearchedMovieList() }
+        return Pager(
+            config = getDefaultPageConfig(),
+            pagingSourceFactory = pagingSourceFactory,
+            remoteMediator = SearchRemoteMediator(
+                movieRemoteDataSource,
+                movieDatabase,
+                query
+            )
+        ).flow
+    }
 
 //    fun letCategorisedMovieFlowDb() = flow<Result<List<MovieCategory>>> {
 //

@@ -13,6 +13,7 @@ import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import com.ironsource.project.R
 import com.ironsource.project.databinding.FragmentMovieListBinding
+import com.ironsource.project.presentation.common.adapters.MovieListPagingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,11 +26,11 @@ class MovieListFragment : Fragment() {
 
     private var _binding: FragmentMovieListBinding? = null
 
-    private val adapter = MovieListPagingAdapter()
-
     private val binding get() = _binding!!
 
     private val viewModel: MovieListViewModel by viewModels()
+
+    private val adapter = MovieListPagingAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +52,15 @@ class MovieListFragment : Fragment() {
     }
 
     private fun initMembers() {
-        adapter.setOnMovieClickListener {
-
-        }
-        binding.movieListRecyclerView.adapter = adapter
-        binding.retryButton.setOnClickListener { adapter.retry() }
+        adapter.setOnMovieClickListener {}
+        binding.homeMovieListLayout.movieListRecyclerView.adapter = adapter
+        binding.homeMovieListLayout.retryButton.setOnClickListener { adapter.retry() }
     }
 
     private fun collectUiState() {
         lifecycleScope.launchWhenStarted {
-            viewModel.uiState.collect {
-                it.data?.let { adapter.submitData(it) }
+            viewModel.pagingDataFlow.collect {
+                it.let { adapter.submitData(it) }
             }
         }
     }
@@ -74,15 +73,15 @@ class MovieListFragment : Fragment() {
                     loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
 
                 // show empty list
-                binding.movieListEmptyTextView.isVisible = isListEmpty
+                binding.homeMovieListLayout.movieListEmptyTextView.isVisible = isListEmpty
                 // Only show the list if refresh succeeds, either from the the local db or the remote.
-                binding.movieListRecyclerView.isVisible =
+                binding.homeMovieListLayout.movieListRecyclerView.isVisible =
                     loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
                 // Show loading spinner during initial load or refresh.
-                binding.movieListProgressBar.isVisible =
+                binding.homeMovieListLayout.movieListProgressBar.isVisible =
                     loadState.mediator?.refresh is LoadState.Loading
                 // Show the retry state if initial load or refresh fails.
-                binding.retryButton.isVisible =
+                binding.homeMovieListLayout.retryButton.isVisible =
                     loadState.mediator?.refresh is LoadState.Error && adapter.itemCount == 0
 
                 handleError(loadState)

@@ -5,6 +5,6 @@ import com.ironsource.project.domain.models.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-
      fun getPopularMovies(): Flow<PagingData<Movie>>
+     fun searchMovie(query:String): Flow<PagingData<Movie>>
 }

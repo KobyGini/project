@@ -1,4 +1,4 @@
-package com.ironsource.project.presentation.home
+package com.ironsource.project.presentation.common.adapters
 
 import android.view.LayoutInflater
 import android.view.View

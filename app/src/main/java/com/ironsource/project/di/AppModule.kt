@@ -8,6 +8,7 @@ import com.ironsource.project.data.remote.MovieRemoteDataSource
 import com.ironsource.project.data.repository.MovieRepositoryImpl
 import com.ironsource.project.domain.repository.MovieRepository
 import com.ironsource.project.domain.usecases.GetPopularMovieUseCase
+import com.ironsource.project.domain.usecases.SearchMovieUseCase
 import com.ironsource.project.domain.util.MovieConstants.HTTP_API_KEY
 import com.ironsource.project.domain.util.MovieConstants.MOVIE_DB
 import com.ironsource.project.domain.util.MovieConstants.PEXELS_SERVICE
@@ -122,4 +123,10 @@ object AppModule {
     fun provideGetPopularMovieUseCase(
         repository: MovieRepository
     ) = GetPopularMovieUseCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideSearchMovieUseCase(
+        repository: MovieRepository
+    ) = SearchMovieUseCase(repository)
 }
